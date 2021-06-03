@@ -2,30 +2,36 @@ const express = require('express')
 const router = express.Router()
 const postsServices = require('../service/postsServices')
 
-router.get('/posts', async (req, resp) => {
-    const posts = await postsServices.getPosts()
-
-    resp.json(posts)
+router.get('/posts', async (req, resp, next) => {
+    try {
+        const posts = await postsServices.getPosts()
+        resp.json(posts)
+    } catch (error) {
+        next(error)
+    }
 })
 
-router.get('/posts/:id', async (req, resp) => {
-    const post = await postsServices.getPost(req.params.id)
-
-    resp.json(post)
+router.get('/posts/:id', async (req, resp, next) => {
+    try {
+        const post = await postsServices.getPost(req.params.id)
+        resp.json(post)
+    } catch (error) {
+        next(error)
+    }
 })
 
-router.post('/posts', async (req, resp) => {
+router.post('/posts', async (req, resp, next) => {
     const post = req.body
 
     try {
         const newPost = await postsServices.savePost(post)
         resp.status(201).json(newPost)
     } catch (error) {
-        resp.status(409).send(error.message)
+        next(error)
     }
 })
 
-router.put('/posts/:id', async (req, resp) => {
+router.put('/posts/:id', async (req, resp, next) => {
     const post = req.body
     const id = req.params.id
 
@@ -33,14 +39,17 @@ router.put('/posts/:id', async (req, resp) => {
         await postsServices.updatePost(id, post)
         resp.status(204).end()
     } catch(error) {
-        resp.status(404).send(error.message)
+        next(error)
     }
 })
 
-router.delete('/posts/:id', async (req, resp) => {
-    await postsServices.deletePost(req.params.id)
-
-    resp.status(204).end()
+router.delete('/posts/:id', async (req, resp, next) => {
+    try {
+        await postsServices.deletePost(req.params.id)
+        resp.status(204).end()
+    } catch(error) {
+        next(error)
+    }
 })
 
 module.exports = router

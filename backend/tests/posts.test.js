@@ -1,4 +1,3 @@
-const { response } = require('express')
 const postsServices = require('../service/postsServices')
 const { generateText, request } = require('./services')
 
