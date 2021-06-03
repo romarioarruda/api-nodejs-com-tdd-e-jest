@@ -1,14 +1,5 @@
-const axios = require('axios')
-const crypto = require('crypto')
 const postsServices = require('../service/postsServices')
-
-const generateText = () => {
-    return crypto.randomBytes(20).toString('hex')    
-}
-
-const request = function (url, method, data) {
-    return axios({ url, method, data })
-}
+const { generateText, request } = require('./services')
 
 test('Deve retornar os posts', async () => {
     const post1 = await postsServices.savePost({ title: generateText(), content: generateText() })
