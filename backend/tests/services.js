@@ -6,7 +6,7 @@ const generateText = () => {
 }
 
 const request = function (url, method, data) {
-    return axios({ url, method, data })
+    return axios({ url, method, data, validateStatus: false })
 }
 
 module.exports = {

@@ -8,6 +8,10 @@ exports.getPost = function(postId) {
     return database.oneOrNone('select * from post where id = $1', [postId])
 }
 
+exports.getPostByTitle = function(postTitle) {
+    return database.oneOrNone('select * from post where title = $1', [postTitle])
+}
+
 exports.savePost = function(post) {
     return database.one('insert into post (title, content) values ($1, $2) returning *', [post.title, post.content])
 }
